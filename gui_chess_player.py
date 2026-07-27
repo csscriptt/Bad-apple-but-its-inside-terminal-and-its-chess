@@ -6,8 +6,14 @@ import sys
 import urllib.request
 import customtkinter as ctk
 
-# HIGH-DEFINITION MATRIX CONFIGURATION: Expanded to 80x40 for crisp lines and detail
-COLS, ROWS = 80, 40
+# Read resolution arguments injected by the shell launcher script
+if len(sys.argv) == 3:
+    COLS = int(sys.argv[1])
+    ROWS = int(sys.argv[2])
+else:
+    # Default fallback quality setting
+    COLS, ROWS = 80, 40
+
 FPS = 30
 FRAME_DURATION = 1.0 / FPS
 
@@ -16,7 +22,6 @@ os.makedirs(WORKSPACE, exist_ok=True)
 VIDEO_PATH = os.path.join(WORKSPACE, "bad_apple_core.mp4")
 AUDIO_OUT = os.path.join(WORKSPACE, "runtime_audio.wav")
 
-# 100% Reliable Wikimedia Mirror
 VIDEO_MIRROR_URL = "https://wikimedia.org"
 
 def verify_and_fetch_assets():
@@ -29,7 +34,7 @@ def verify_and_fetch_assets():
     
     for backup in local_backups:
         if os.path.exists(backup) and os.path.getsize(backup) > 1000000:
-            print(f"\n[ Local asset detected at: {backup} ]")
+            print(f"[ Local asset detected at: {backup} ]")
             global VIDEO_PATH
             VIDEO_PATH = backup
             return
@@ -39,10 +44,7 @@ def verify_and_fetch_assets():
         print("Downloading verified Bad Apple!! source file stream container...")
         print("Please wait a moment (this only happens once)...")
         try:
-            req = urllib.request.Request(
-                VIDEO_MIRROR_URL, 
-                headers={'User-Agent': 'Mozilla/5.0'}
-            )
+            req = urllib.request.Request(VIDEO_MIRROR_URL, headers={'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(req) as response, open(VIDEO_PATH, 'wb') as out_file:
                 out_file.write(response.read())
             print("Download Complete! Storage synchronized securely.")
@@ -52,7 +54,7 @@ def verify_and_fetch_assets():
 
 verify_and_fetch_assets()
 
-print("Pre-loading high-definition chess video containers into memory...")
+print(f"Pre-loading {COLS}x{ROWS} chess video containers into memory...")
 subprocess.run(["ffmpeg", "-y", "-i", VIDEO_PATH, "-vn", "-acodec", "pcm_s16le", "-ar", "44100", AUDIO_OUT], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 ffmpeg_process = subprocess.Popen([
@@ -77,7 +79,7 @@ while True:
 ffmpeg_process.stdout.close()
 ffmpeg_process.wait()
 
-print(f"Cached {len(PRELOADED_FRAMES)} HD animation layers. Booting high-density widescreen engine...")
+print(f"Cached {len(PRELOADED_FRAMES)} animation layers. Booting engine...")
 
 if len(PRELOADED_FRAMES) == 0:
     print("\n[ ERROR: FFmpeg data parsing loop returned an empty stream layout. ]\n")
@@ -129,8 +131,7 @@ class BadAppleChessPlayer:
 
         cell_w = win_width / COLS
         cell_h = win_height / ROWS
-        # Proportional text sizing scaled cleanly for high density grids
-        font_size = max(5, int(cell_h * 0.70))
+        font_size = max(3, int(cell_h * 0.70))
 
         self.canvas.delete("all")
         current_frame = self.frames[target_frame]
@@ -148,7 +149,6 @@ class BadAppleChessPlayer:
                 tile_color = "#ebd0b9" if (x_idx + y_idx) % 2 == 0 else "#b58863"
                 self.canvas.create_rectangle(x1, int(y1), x2, int(y2), fill=tile_color, outline="")
                 
-                # High-density piece renderer mapping sharp edge thresholds
                 if current_frame[y_idx][x_idx] > 127:
                     self.canvas.create_text(cx, cy, text="♔", fill="#fafaf9", font=("Arial", font_size))
                 else:
@@ -164,7 +164,7 @@ class BadAppleChessPlayer:
 
 if __name__ == "__main__":
     root = ctk.CTk()
-    root.title("Bad Apple!! - High-Definition Chess Player")
+    root.title("Bad Apple!! - Multi-Resolution Chess Player")
     root.geometry("1100x600")
     root.resizable(True, True)
     
