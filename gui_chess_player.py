@@ -15,17 +15,31 @@ os.makedirs(WORKSPACE, exist_ok=True)
 VIDEO_PATH = os.path.join(WORKSPACE, "bad_apple_core.mp4")
 AUDIO_OUT = os.path.join(WORKSPACE, "runtime_audio.wav")
 
-# HIGH-RELIABILITY DIRECT MP4 STREAMING LINK
+# High-reliability direct raw video path string
 VIDEO_MIRROR_URL = "https://githubusercontent.com"
 
 def verify_and_fetch_assets():
-    # If file doesn't exist or is corrupted (less than 1MB), force download
+    # HYBRID FIX: Check for any existing local backup files before checking the network!
+    local_backups = [
+        os.path.expanduser("~/chess_frames/bad_apple_new.mp4"),
+        os.path.join(os.getcwd(), "bad_apple_new.mp4"),
+        os.path.expanduser("~/bad_apple_new.mp4")
+    ]
+    
+    for backup in local_backups:
+        if os.path.exists(backup) and os.path.getsize(backup) > 1000000:
+            print(f"\n[ Local asset detected at: {backup} ]")
+            # Link our master path handle straight to the working local file
+            global VIDEO_PATH
+            VIDEO_PATH = backup
+            return
+
+    # If no local copy exists, fall back to downloading
     if not os.path.exists(VIDEO_PATH) or os.path.getsize(VIDEO_PATH) < 1000000:
         print("\n[ INITIALIZING FIRST-TIME STARTUP ENVIRONMENT ]")
         print("Downloading verified Bad Apple!! source file stream container...")
         print("Please wait a moment (this only happens once)...")
         try:
-            # Custom request headers to ensure a clean direct stream download
             req = urllib.request.Request(
                 VIDEO_MIRROR_URL, 
                 headers={'User-Agent': 'Mozilla/5.0'}
@@ -35,6 +49,7 @@ def verify_and_fetch_assets():
             print("Download Complete! Storage synchronized securely.")
         except Exception as e:
             print(f"\n[ NETWORK ERROR: Failed to pull asset mirror ({e}) ]")
+            print("To fix this local Python glitch, please manually place your 'bad_apple_new.mp4' file inside this directory.\n")
             sys.exit(1)
 
 verify_and_fetch_assets()
@@ -121,20 +136,20 @@ class BadAppleChessPlayer:
         self.canvas.delete("all")
         current_frame = self.frames[target_frame]
         
-        for y in range(ROWS):
-            for x in range(COLS):
-                x1 = int(x * cell_w)
-                y1 = y * cell_h
-                x2 = int((x + 1) * cell_w)
-                y2 = (y + 1) * cell_h
+        for y_idx in range(ROWS):
+            for x_idx in range(COLS):
+                x1 = int(x_idx * cell_w)
+                y1 = y_idx * cell_h
+                x2 = int((x_idx + 1) * cell_w)
+                y2 = (y_idx + 1) * cell_h
                 
                 cx = (x1 + x2) // 2
                 cy = int((y1 + y2) // 2)
                 
-                tile_color = "#ebd0b9" if (x + y) % 2 == 0 else "#b58863"
+                tile_color = "#ebd0b9" if (x_idx + y_idx) % 2 == 0 else "#b58863"
                 self.canvas.create_rectangle(x1, int(y1), x2, int(y2), fill=tile_color, outline="")
                 
-                if current_frame[y][x] > 127:
+                if current_frame[y_idx][x_idx] > 127:
                     self.canvas.create_text(cx, cy, text="♔", fill="#fafaf9", font=("Arial", font_size))
                 else:
                     self.canvas.create_text(cx, cy, text="♚", fill="#1c1917", font=("Arial", font_size, "bold"))
