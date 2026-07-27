@@ -5,38 +5,36 @@ Plays the Bad Apple video inside a window using chess pieces. Supports Linux and
 ## Installation & Setup
 
 ### Linux Users
-Open your terminal and run these commands in order:
 ```bash
-# 1. Download the code
 git clone https://github.com
-
-# 2. Enter the folder
 cd Bad-apple-but-its-inside-terminal-and-its-chess
-
-# 3. Install requirements
 pip install -r requirements.txt --break-system-packages
-
-# 4. Run the player
 python gui_chess_player.py
 ```
 
-### Windows Users
-Follow these steps:
-1.  **Install Python:** Download from python.org. **Important:** Check "Add python.exe to PATH" during installation.
-2.  **Install Library:** Open Command Prompt (`cmd`) and run: `pip install customtkinter`
-3.  **Setup FFmpeg:** Download FFmpeg, extract it, and place `ffmpeg.exe` in `C:\Windows\System32\`.
-4.  **Run:** Download the repo ZIP, extract it, open `cmd` in the folder, and run: `python gui_chess_player.py`
+### Windows Users (Step-by-Step Guide)
+1. **Install Python:** Go to python.org, download the installer, and ensure you check the box that says "Add python.exe to PATH" before clicking install.
+2. **Install Library:** Open your Command Prompt (cmd) and run: `pip install customtkinter`
+3. **Install FFmpeg:** Download FFmpeg for Windows, extract it, and copy the `ffmpeg.exe` file into your `C:\Windows\System32\` folder.
+4. **Run:** Open Command Prompt inside your project folder and run: `python gui_chess_player.py`
 
 ---
 
-## Troubleshooting & Dependencies
+## Linux Package Prerequisites
+Run the exact command for your specific Linux distribution:
+*   **Arch Linux / Manjaro:** `sudo pacman -S ffmpeg tk pulseaudio-utils --needed`
+*   **Ubuntu / Debian / Mint:** `sudo apt update && sudo apt install -y ffmpeg python3-tk`
+*   **Fedora:** `sudo dnf install -y ffmpeg python3-tkinter`
 
-*   **Linux Dependencies:** Install `ffmpeg` and `python3-tk` via your package manager (e.g., `sudo apt install -y ffmpeg python3-tk`).
-*   **Errors:** If `customtkinter` is missing, run `pip install customtkinter`.
-*   **Windows FFmpeg Error:** Re-check Step 3 above.
+---
+
+## Troubleshooting
+*   **Error: "No module named tkinter"** -> Install your distro's GUI package listed in the prerequisites above (e.g., `python3-tk` or `tk`).
+*   **Error: "externally-managed-environment"** -> Add the `--break-system-packages` flag to your pip command.
+*   **Video freezes or Audio fails to start** -> Run this command to kill old background processes: `pkill -9 paplay && pkill -9 ffmpeg`
 
 ---
 
 ## Controls
-*   **F11/F:** Toggle Fullscreen
-*   **Esc:** Close
+*   **F11 / F:** Toggle Fullscreen
+*   **Esc:** Close the program
