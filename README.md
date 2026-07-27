@@ -1,12 +1,10 @@
 # Bad Apple - Chess Display
 
-Plays the Bad Apple video inside a window using changing chess board squares and chess pieces. It works on both Linux and Windows.
+Plays the Bad Apple video inside a window using chess pieces. Supports Linux and Windows.
 
-## Requirements
+## Installation & Setup
 
-Python and FFmpeg are required.
-
-### Installation
+Ensure Python 3 and FFmpeg are installed, then run:
 
 ```bash
 git clone https://github.com
@@ -15,10 +13,23 @@ pip install -r requirements.txt
 python gui_chess_player.py
 ```
 
-## Linux Setup
-Install ffmpeg and python-tk via your package manager (pacman, apt, or dnf).
+### System-Specific Dependencies
+*   **Arch/Manjaro:** `sudo pacman -S ffmpeg tk pulseaudio-utils --needed`
+*   **Ubuntu/Debian/Mint:** `sudo apt update && sudo apt install -y ffmpeg python3-tk pulseaudio-utils`
+*   **Fedora/RHEL:** `sudo dnf install -y ffmpeg python3-tkinter`
+*   **Windows:** Install Python 3 (add to PATH) and FFmpeg (add to PATH).
+
+---
+
+## Controls
+*   **F11/F**: Toggle Fullscreen
+*   **Esc**: Exit
+
+---
 
 ## Troubleshooting
-- **pip error:** Use `pip install -r requirements.txt --break-system-packages` on newer Linux distros.
-- **tk module error:** Install `python3-tk` (Debian/Ubuntu) or `tk` (Arch).
-- **No Audio:** Install `pulseaudio-utils`.
+
+*   **Blank Window/Frozen Video:** Run `pkill -9 paplay && pkill -9 ffmpeg && rm -rf ~/chess_frames/` to clear cache and processes.
+*   **`pip` Error (Linux):** Add `--break-system-packages` to the `pip` command.
+*   **ModuleNotFoundError: 'tkinter':** Install via system package manager (e.g., `python3-tk` or `tk`).
+*   **Audio Lags:** Ensure `pulseaudio-utils` is installed for proper pipewire/pulse handling.
