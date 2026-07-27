@@ -45,3 +45,42 @@ python gui_chess_player.py
 ## Controls
 * Press the **F11** key or the **F** key to toggle Fullscreen mode.
 * Press the **Escape** key (Esc) to close the program completely.
+
+## Troubleshooting (Common Bug Fixes)
+
+If you run into an error when launching or running the program, look for your issue below:
+
+### 1. Error: "paplay: command not found" or Silent Audio
+The program uses your system sound server (`paplay`). If audio does not work, install your sound utilities:
+```bash
+# On Arch Linux
+sudo pacman -S pulseaudio-utils --needed
+
+# On Ubuntu / Debian
+sudo apt install -y pulseaudio-utils
+```
+
+### 2. Error: "externally-managed-environment" when running pip
+Modern Linux distros block global pip installs. Add the bypass flag:
+```bash
+pip install -r requirements.txt --break-system-packages
+```
+
+### 3. Error: "No module named tkinter" or Window fails to open
+Your Python installation is missing its graphical user interface package. Fix it by running:
+```bash
+# On Arch Linux
+sudo pacman -S tk --needed
+
+# On Ubuntu / Debian
+sudo apt install -y python3-tk
+
+# On Fedora
+sudo dnf install -y python3-tkinter
+```
+
+### 4. Video hangs or starts with an empty board cache
+Old hardware threads or corrupted files might be locking up your media folders. Force-wipe the active cache:
+```bash
+pkill -9 paplay && pkill -9 ffmpeg && rm -rf ~/chess_frames/
+```
