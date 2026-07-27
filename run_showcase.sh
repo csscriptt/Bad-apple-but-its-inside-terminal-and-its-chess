@@ -1,19 +1,21 @@
 #!/bin/bash
 clear
 echo "===================================================="
-echo "       CHESSBOARD VIDEO SYNTHESIS ENGINE v1.2       "
+echo "       CHESSBOARD VIDEO SYNTHESIS ENGINE v1.3       "
 echo "===================================================="
 echo "Select Video Render Quality Layer Level:"
-echo "  1) Low Density Quality  - 40x20  (800 Tiles)"
-echo "  2) Medium HD Quality    - 80x40  (3,200 Tiles)"
-echo "  3) Ultra Max HD Quality - 160x80 (12,800 Tiles)"
+echo "  1) Low Density Quality   - 40x20  (800 Tiles)"
+echo "  2) Medium HD Quality     - 80x40  (3,200 Tiles)"
+echo "  3) High-Density Quality  - 120x60 (7,200 Tiles)"
+echo "  4) Ultra Max HD Quality  - 160x80 (12,800 Tiles)"
 echo "===================================================="
-read -p "Enter choice (1-3): " CHOICE
+read -p "Enter choice (1-4): " CHOICE
 
 case $CHOICE in
     1) COLS=40; ROWS=20 ;;
     2) COLS=80; ROWS=40 ;;
-    3) COLS=160; ROWS=80 ;;
+    3) COLS=120; ROWS=60 ;;
+    4) COLS=160; ROWS=80 ;;
     *) echo "Invalid input selection. Using 80x40 fallback default."; COLS=80; ROWS=40 ;;
 esac
 
